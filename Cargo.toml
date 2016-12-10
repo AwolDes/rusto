@@ -1,0 +1,7 @@
+[package]
+name = "rusto"
+version = "0.1.0"
+authors = ["AwolDes <awoldes@gmail.com>"]
+
+[dependencies]
+encryptfile = "0.1.3"
