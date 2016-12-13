@@ -1,16 +1,19 @@
 use encryptfile as ef;
 use std::fs;
 use std::io;
-
+use std::path::PathBuf;
+// check out https://www.reddit.com/r/rust/comments/3qvmma/encrypting_file_with_asymmetric_encryption/
 pub fn encrypt_file(mut file_name: String, encrypted_file_name: String, password: String) -> io::Result<()> {
-        println!("Encrypting file: {}", file_name);
+
+        println!("Encrypting file: {:?}", file_name);
         let encrypted_name = encrypted_file_name + ".ef";
 
         {
+
             let in_file = &mut file_name;
 
             let mut c = ef::Config::new();
-            c.input_stream(ef::InputStream::File(in_file.to_owned()))
+            c.input_stream(ef::InputStream::File(in_file.to_string()))
              .output_stream(ef::OutputStream::File(encrypted_name.to_owned()))
              .add_output_option(ef::OutputOption::AllowOverwrite)
              .initialization_vector(ef::InitializationVector::GenerateFromRng)
@@ -19,7 +22,7 @@ pub fn encrypt_file(mut file_name: String, encrypted_file_name: String, password
              let _ = ef::process(&c).map_err(|e| panic!("error encrypting: {:?}", e));
          }
 
-        println!("{} was encrypted to {}", file_name, encrypted_name);
+        println!("{:?} was encrypted to {}", file_name, encrypted_name);
         try!(fs::remove_file(file_name));
         Ok(())
     }
