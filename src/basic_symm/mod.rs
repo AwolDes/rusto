@@ -1,6 +1,8 @@
 use encryptfile as ef;
+use std::fs;
+use std::io;
 
-pub fn encrypt_file(mut file_name: String, encrypted_file_name: String, password: String) {
+pub fn encrypt_file(mut file_name: String, encrypted_file_name: String, password: String) -> io::Result<()> {
         println!("Encrypting file: {}", file_name);
         let encrypted_name = encrypted_file_name + ".ef";
 
@@ -18,9 +20,11 @@ pub fn encrypt_file(mut file_name: String, encrypted_file_name: String, password
          }
 
         println!("{} was encrypted to {}", file_name, encrypted_name);
+        try!(fs::remove_file(file_name));
+        Ok(())
     }
 
-pub fn decrypt_file(file_name: String, password: String, decrypted_file_name: String){
+pub fn decrypt_file(file_name: String, password: String, decrypted_file_name: String) -> io::Result<()> {
     println!("Decrypting file: {} with password {}", file_name, password);
     let encrypted_name = file_name + ".ef";
     let decrypted_name = decrypted_file_name + ".txt";
@@ -35,4 +39,6 @@ pub fn decrypt_file(file_name: String, password: String, decrypted_file_name: St
     }
 
     println!("{} was decrypted to {}", encrypted_name, decrypted_name);
+    try!(fs::remove_file(encrypted_name));
+    Ok(())
 }
