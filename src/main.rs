@@ -2,6 +2,7 @@ extern crate rusto;
 
 use rusto::basic_symm;
 use rusto::directory_reading;
+use rusto::aes;
 use std::path::Path;
 
 fn main() {
@@ -26,7 +27,7 @@ fn main() {
     //directory_reading::read_directory(path.to_string());
 
     let real_path = Path::new("./encrypt_me");
-    
-    directory_reading::visit_dirs(real_path);
 
+    directory_reading::visit_dirs(real_path);
+    aes::AESCipher();
 }
