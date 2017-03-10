@@ -18,7 +18,7 @@ pub fn visit_dirs(dir: &Path) -> io::Result<()> {
     if dir.is_dir() {
         for entry in try!(fs::read_dir(dir)) {
             let entry = try!(entry);
-            println!("{:?}", entry);
+            //println!("{:?}", entry);
             let path = entry.path();
             let path_str = path.to_str();
             println!("{:?}", path_str.unwrap());
